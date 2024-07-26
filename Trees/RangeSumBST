@@ -1,0 +1,24 @@
+938. Range Sum of BST
+
+Given the root node of a binary search tree and two integers low and high, return the sum of values of all nodes with a value in the inclusive range [low, high].
+
+
+class Solution {
+    private int sum=0;
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        sumBST(root,low,high);
+        return sum;
+    }
+    public void sumBST(TreeNode root,int low,int high){
+        if(root==null) return;
+        if(root.val<low){
+            sumBST(root.right,low,high);
+        }else if(root.val>high){
+            sumBST(root.left,low,high);
+        }else{
+            sum+=root.val;
+            sumBST(root.left,low,high);
+            sumBST(root.right,low,high);
+        }
+    }
+}
