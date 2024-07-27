@@ -1,0 +1,19 @@
+110. Balanced Binary Tree
+
+Given a binary tree, determine if it is 
+height-balanced
+
+
+class Solution {
+    int check(TreeNode root){
+        if(root==null) return 0;
+        int lh=check(root.left);
+        int rh=check(root.right);
+        if(Math.abs(lh-rh)>1) return 10000000;
+        return Math.max(lh,rh)+1;
+    }
+    public boolean isBalanced(TreeNode root) {
+        if(check(root)>10000) return false;
+        return true;
+    }
+}
