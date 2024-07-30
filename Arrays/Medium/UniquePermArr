@@ -1,0 +1,36 @@
+All Unique Permutations of an array
+Given an array arr[] of length n. Find all possible unique permutations of the array in sorted order. A sequence A is greater than sequence B
+if there is an index i for which Aj = Bj for all j<i and Ai > Bi.
+
+
+
+class Solution {
+    ArrayList<ArrayList<Integer>> findPerms(ArrayList<Integer> arr, int n) {
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        if (n == 1) {
+            ArrayList<Integer> temp = new ArrayList<>();
+            temp.add(arr.get(0));
+            ans.add(temp);
+            return ans;
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (i > 0 && arr.get(i - 1) == arr.get(i))
+                continue;
+
+            int removedElement = arr.remove(i);
+            ArrayList<ArrayList<Integer>> permsNext = findPerms(arr, n - 1);
+            for (int j = 0; j < permsNext.size(); j++) {
+                permsNext.get(j).add(0, removedElement);
+                ans.add(permsNext.get(j));
+            }
+            arr.add(i, removedElement);
+        }
+
+        return ans;
+    }
+    ArrayList<ArrayList<Integer>> uniquePerms(ArrayList<Integer> arr , int n) {
+        Collections.sort(arr);
+        return findPerms(arr, n);
+    }
+};
