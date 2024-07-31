@@ -1,0 +1,26 @@
+Print Anagrams Together
+
+Given an array of strings, return all groups of strings that are anagrams. The groups must be created in order of their appearance 
+in the original array. Look at the sample case for clarification.
+
+Note: The final output will be in lexicographic order.
+
+
+   public List<List<String>> Anagrams(String[] string_list) {
+        HashMap<String,List<String>> ana=new HashMap<>();
+        
+        for(String str:string_list){
+            char arr[]=str.toCharArray();
+            Arrays.sort(arr);
+            String sorted=new String(arr);
+            
+            if(!ana.containsKey(sorted))
+            ana.put(sorted,new ArrayList<>());
+            
+            ana.get(sorted).add(str);
+            
+        }
+        List<List<String>> res=new ArrayList<>(ana.values());
+        return res;
+    }
+}
