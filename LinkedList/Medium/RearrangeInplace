@@ -1,0 +1,28 @@
+Rearrange a given linked list in-place.
+
+Given a singly linked list L0 -> L1 -> … -> Ln-1 -> Ln. Rearrange the nodes in the list so that the new formed
+list is : L0 -> Ln -> L1 -> Ln-1 -> L2 -> Ln-2 … You are required to do this in place without altering the nodes’ values. 
+
+
+class Solution
+{
+    void rearrangeEvenOdd(Node head)
+    {
+          if(head.next==null || head.next.next==null)
+            return;
+            
+          Node odd=head;
+          Node even=head.next;
+          Node evenStart=even;
+          while(odd.next!=null && even.next!=null)
+          {
+              odd.next=even.next;
+              odd=odd.next;
+              even.next=odd.next;
+              even=even.next;
+
+          }
+          odd.next=evenStart;
+          return;
+     }
+}
