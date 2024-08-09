@@ -1,0 +1,106 @@
+863. All Nodes Distance K in Binary Tree
+
+Given the root of a binary tree, the value of a target node target, and an integer k, return an array of the values of all nodes that have 
+a distance k from the target node.
+
+You can return the answer in any order.
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    
+    public void markParents(TreeNode root,Map<TreeNode,TreeNode> parent_track,TreeNode target){
+
+        // Initialize a queue and add the root to it
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        // Traverse the tree using BFS
+        while(!q.isEmpty()){
+            // Remove the current node from the queue
+            TreeNode cur = q.poll();
+
+            // If the current node has a left child, mark the left child's parent as the current node
+            if(cur.left != null){
+                parent_track.put(cur.left,cur);
+                q.offer(cur.left);
+            }
+
+            // If the current node has a right child, mark the right child's parent as the current node
+            if(cur.right != null){
+                parent_track.put(cur.right,cur);
+                q.offer(cur.right);
+            }
+        }
+    }
+
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+
+        // Initialize a map to track the parents of each node, and mark the parents using the markParents method
+        Map<TreeNode,TreeNode> parent_track = new HashMap<>();
+        markParents(root,parent_track,root);
+
+        // Initialize a map to track visited nodes, and a queue to perform BFS
+        Map<TreeNode,Boolean> visited = new HashMap<>();
+        Queue<TreeNode> q = new LinkedList<>();
+
+        // Add the target node to the queue and mark it as visited
+        q.offer(target);
+        visited.put(target,true);
+
+        int cur_level = 0;
+
+        // Traverse the tree using BFS
+        while(!q.isEmpty()){
+            int size = q.size();
+
+            // If the current level is equal to the desired distance k, exit the loop
+            if(k == cur_level){
+                break;
+            }
+            cur_level++;
+
+            // Traverse all nodes at the current level
+            for(int i = 0; i < size; i++){
+                // Remove the current node from the queue
+                TreeNode current = q.poll();
+
+                // If the current node has a left child that has not been visited, add it to the queue and mark it as visited
+                if(current.left != null && visited.get(current.left) == null){
+                    q.offer(current.left);
+                    visited.put(current.left,true);
+                }
+
+                // If the current node has a right child that has not been visited, add it to the queue and mark it as visited
+                if(current.right != null && visited.get(current.right) == null){
+                    q.offer(current.right);
+                    visited.put(current.right,true);
+                }
+
+                //this checks in upward direction that is there any noe which is present above the target at k distance
+                // If the current node has a parent that has not been visited, add it to the queue and mark it as visited
+                if(parent_track.get(current) != null && visited.get(parent_track.get(current)) == null){
+                    q.offer(parent_track.get(current));
+                    visited.put(parent_track.get(current),true);
+                }
+            }
+        }
+
+        // Add all remaining nodes in the queue to the result list
+        List<Integer> result = new ArrayList<>();
+        while(!q.isEmpty()){
+            TreeNode current = q.poll();
+            result.add(current.val);
+        }
+    return result;
+    }
+}
