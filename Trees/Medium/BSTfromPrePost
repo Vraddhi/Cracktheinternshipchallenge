@@ -1,0 +1,50 @@
+889. Construct Binary Tree from Preorder and Postorder Traversal
+
+Given two integer arrays, preorder and postorder where preorder is the preorder traversal of a binary tree of distinct values and postorder
+is the postorder traversal of the same tree, reconstruct and return the binary tree.
+
+If there exist multiple answers, you can return any of them.
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    TreeNode create(int [] pre ,int startpre, int endpre ,int post[], int startpost , int endpost  ){
+        if(startpre > endpre)
+        return null;
+
+        TreeNode root=new TreeNode(pre[startpre]);
+        if(startpre==endpre)
+        return root;
+
+        int ind=startpost;
+
+        while(post[ind]!=pre[startpre+1]) ind++;
+
+        int total=ind-startpost+1;
+
+        root.left=create(pre,startpre+1,startpre+total,post,startpost,ind);
+        root.right=create(pre,startpre+total+1,endpre,post,ind+1,endpost=1);
+            
+            return root;
+    }
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        int n=preorder.length;
+
+        return create(preorder,0,n-1,postorder,0,n-1);
+
+    }
+}
