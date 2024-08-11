@@ -1,0 +1,56 @@
+Min distance between two given nodes of a Binary Tree
+
+Given a binary tree with n nodes and two node values, a and b, your task is to find the minimum distance 
+between them. The given two nodes are guaranteed to be in the binary tree and all node values are unique.
+
+
+
+
+
+class GfG {
+    int findDist(Node root, int a, int b) {
+        // find LCA, and the find path length till a and b from LCA as root
+        Node lca = findLCA(root, a, b);
+
+        int left = findHeight(lca, a);
+        int right = findHeight(lca, b);
+
+        // -2 because we are returning no. of nodes in the path, so '-1' for each node to find no of edges
+        return left + right - 2; 
+    }
+    
+    // LCA Logic
+    Node findLCA(Node root, int a, int b) {
+        
+        if(root == null || root.data == a || root.data == b) return root;
+        
+        Node left = findLCA(root.left, a, b);
+        Node right = findLCA(root.right, a, b);
+        
+        if(left == null) return right;
+        
+        if(right == null) return left;
+        
+        return root;
+    }
+    
+    int findHeight(Node root, int target) {
+        
+        if(root == null) return 0;
+        
+        if(root.data == target) return 1;
+        
+        int left = findHeight(root.left, target);
+        int right = findHeight(root.right, target);
+        
+        // means found the target node in left branch, need to increment path length till it reaches LCA node
+        if(left != 0)
+            return 1 + left;
+        // means found the target node in right branch, need to increment path length till it reaches LCA node
+        if(right != 0)
+            return 1 + right;    
+        
+        return 0;   // when both left and right are 0, target node not found
+        
+    }
+}
