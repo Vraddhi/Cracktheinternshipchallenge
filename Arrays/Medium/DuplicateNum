@@ -35,3 +35,27 @@ class Solution {
         return fast;
     }
 }
+
+//cpp solution with index approach 
+int findDuplicate(vector<int>& nums) {
+        int n = nums.size();
+        for(int i=0;i<n;i++){
+            int newNum = abs(nums[i]);
+            if(nums[newNum]>0){
+                int ind = newNum;
+                nums[ind] = -nums[ind];
+            }else{
+                return newNum;
+            }
+        }
+        return -1;
+    }
+
+
+/*
+Intution : as the range of the number is from 1 to n+1, and in the array the index can go from 0 to n, so we can make use of the index to find whether the particular element is present in the array, whenever we encounter an element, then we go to the index corresponding to the element, if if it is alreay found then that would have already been visited so that is the element repeated, if not then we mark the element as visited by making it negative. 
+
+Time Complexity : O(N) as we are traversing the array only once.
+Space Complexity : O(1) as we are not using any extra space.
+
+*/
